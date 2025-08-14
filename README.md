@@ -1,7 +1,6 @@
 # ⌨️ Typer
 
 [![Go Version](https://img.shields.io/badge/Go-1.24.5-blue.svg)](https://golang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A simple and elegant terminal-based typing test application built with Go and the [Bubble Tea](https://github.com/charmbracelet/bubbletea) library.
 
@@ -24,16 +23,18 @@ git clone https://github.com/user/repo.git
 cd typer
 
 # Install dependencies
-go get github.com/charmbracelet/bubbletea
-go get github.com/charmbracelet/lipgloss
+go mod tidy
 
 # Run the application
-go run main.go
+make run
+# or
+make build
+go run ./bin/typer
 ```
 
 ## 🖼️ Screenshot
 
-![Screenshot of the application](placeholder.png)
+![Screenshot of the application](main.png)
 
 ## ToDo
 
