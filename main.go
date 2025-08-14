@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"math/rand"
 	"os"
 	"strings"
 	"time"
@@ -37,9 +40,32 @@ var (
 			Faint(true)
 )
 
+func getQuote() string {
+	file, err := os.Open("quotes.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer file.Close()
+
+	var quotes []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		quotes = append(quotes, scanner.Text())
+	}
+
+	// Check for any errors during scanning
+	if err := scanner.Err(); err != nil {
+		log.Fatalf("Error scanning file: %v", err)
+	}
+
+	randomNumber := 0 + rand.Intn((len(quotes)-1)-0+1)
+	return quotes[randomNumber]
+}
+
 func InitialModel() Model {
 	return Model{
-		sentence:   "Hello World",
+		sentence:   getQuote(),
 		typedText:  "",
 		isOver:     false,
 		hasStarted: false,
