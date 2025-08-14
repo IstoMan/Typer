@@ -11,45 +11,39 @@ import (
 )
 
 type Model struct {
-	sentence     string
-	typedText    string
-	correctStyle lipgloss.Style
-	normalStyle  lipgloss.Style
-	wrongStyle   lipgloss.Style
-	helpStyle    lipgloss.Style
-	startTime    time.Time
-	isOver       bool
-	hasStarted   bool
-	wpm          float64
+	sentence   string
+	typedText  string
+	startTime  time.Time
+	isOver     bool
+	hasStarted bool
+	wpm        float64
 }
 
+var (
+	normalStyle = lipgloss.NewStyle().
+			Align(lipgloss.Center)
+
+	correctStyle = lipgloss.NewStyle().
+			Align(lipgloss.Center).
+			Foreground(lipgloss.Color("#30fc03"))
+
+	wrongStyle = lipgloss.NewStyle().
+			Align(lipgloss.Center).
+			Foreground(lipgloss.Color("#fc0324"))
+
+	helpStyle = lipgloss.NewStyle().
+			Align(lipgloss.Bottom).
+			Italic(true).
+			Faint(true)
+)
+
 func InitialModel() Model {
-	ns := lipgloss.NewStyle().
-		Align(lipgloss.Center)
-
-	cs := lipgloss.NewStyle().
-		Align(lipgloss.Center).
-		Foreground(lipgloss.Color("#30fc03"))
-
-	ws := lipgloss.NewStyle().
-		Align(lipgloss.Center).
-		Foreground(lipgloss.Color("#fc0324"))
-
-	hs := lipgloss.NewStyle().
-		Align(lipgloss.Bottom).
-		Italic(true).
-		Faint(true)
-
 	return Model{
-		sentence:     "Hello World",
-		typedText:    "",
-		correctStyle: cs,
-		normalStyle:  ns,
-		wrongStyle:   ws,
-		helpStyle:    hs,
-		isOver:       false,
-		hasStarted:   false,
-		wpm:          0,
+		sentence:   "Hello World",
+		typedText:  "",
+		isOver:     false,
+		hasStarted: false,
+		wpm:        0,
 	}
 }
 
@@ -109,25 +103,25 @@ func (m Model) View() string {
 		s := fmt.Sprintf("Your final wpm is: %1.f", m.wpm)
 		ui.WriteString(congrats.Render(s))
 		ui.WriteString("\n\n")
-		ui.WriteString(m.helpStyle.Render("ctrl+c to exit"))
+		ui.WriteString(helpStyle.Render("ctrl+c to exit"))
 		return ui.String()
 	}
 
 	for i, char := range m.sentence {
 		if i < len(m.typedText) {
 			if m.typedText[i] == byte(char) {
-				ui.WriteString(m.correctStyle.Render(string(char)))
+				ui.WriteString(correctStyle.Render(string(char)))
 			} else {
-				ui.WriteString(m.wrongStyle.Render(string(char)))
+				ui.WriteString(wrongStyle.Render(string(char)))
 			}
 		} else {
-			ui.WriteString(m.normalStyle.Render(string(char)))
+			ui.WriteString(normalStyle.Render(string(char)))
 		}
 	}
 
 	ui.WriteString("\n\n")
 
-	ui.WriteString(m.helpStyle.Render("ctrl+c to exit"))
+	ui.WriteString(helpStyle.Render("ctrl+c to exit"))
 
 	return ui.String()
 }
