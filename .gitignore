@@ -13,7 +13,7 @@
 # You can ignore the specific executable if it's built in the root directory.
 # For example, if your project root is 'my-app' and you build an executable named 'my-app':
 # /my-app
-/typer
+bin/
 
 # Dependency management
 # Go modules cache
