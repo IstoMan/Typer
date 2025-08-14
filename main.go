@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -13,21 +14,26 @@ type Model struct {
 	input        string
 	correctStyle lipgloss.Style
 	normalStyle  lipgloss.Style
+	wrongStyle   lipgloss.Style
 }
 
 func InitialModel() Model {
-	cs := lipgloss.NewStyle().
-		Align(lipgloss.Center).
-		Foreground(lipgloss.Color("#30fc03"))
-
 	ns := lipgloss.NewStyle().
 		Align(lipgloss.Center)
 
+	cs := lipgloss.NewStyle().
+		Inherit(ns).
+		Foreground(lipgloss.Color("#30fc03"))
+
+	ws := lipgloss.NewStyle().Inherit(ns).
+		Foreground(lipgloss.Color("#fc0324"))
+
 	return Model{
-		sentence:     "The quick brown box jumps over the lazy",
+		sentence:     "The quick brown fox jumps over the lazy dog.",
 		input:        "",
 		correctStyle: cs,
 		normalStyle:  ns,
+		wrongStyle:   ws,
 	}
 }
 
@@ -44,9 +50,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c":
 			return m, tea.Quit
 		case "backspace":
-			m.input = m.input[:len(m.input)-1]
+			if len(m.input) > 0 {
+				m.input = m.input[:len(m.input)-1]
+			}
 		default:
-			m.input += string(msg.Runes)
+			if len(m.input) < len(m.sentence) {
+				m.input += string(msg.Runes)
+			}
 		}
 	}
 
@@ -54,7 +64,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	return fmt.Sprintf("%s%s\n\n%s", m.normalStyle.Render(m.sentence), m.correctStyle.Render(m.input), "ctrl+c to exit")
+	var ui strings.Builder
+	ui.WriteString(m.normalStyle.Render(m.sentence))
+
+	for i, char := range m.input {
+		if string(char) == string(m.sentence[i]) {
+			ui.WriteString(m.correctStyle.Render(string(char)))
+		} else {
+			ui.WriteString(m.wrongStyle.Render(string(char)))
+		}
+	}
+
+	return ui.String()
 }
 
 func main() {
