@@ -41,7 +41,3 @@ go run ./bin/typer
 - [ ] Add more quotes to the `quotes.txt` file.
 - [ ] Add a feature to select the difficulty of the quotes.
 - [ ] Add a feature to display the user's progress over time.
-
-## 🤝 Contributing
-
-Contributions are welcome! If you have any ideas on how to improve the application, feel free to open an issue or a pull request.
