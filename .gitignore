@@ -1,0 +1,34 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binaries
+*_test
+
+# Output of `go build`
+# For example, if your main package is in a directory named 'myproject',
+# the executable will likely be named 'myproject' (or 'myproject.exe' on Windows).
+# You can ignore the specific executable if it's built in the root directory.
+# For example, if your project root is 'my-app' and you build an executable named 'my-app':
+# /my-app
+/typer
+
+# Dependency management
+# Go modules cache
+.go/
+# Vendor directory (if not using Go modules or if explicitly vendoring)
+vendor/
+
+# Editor/IDE specific files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Temporary files
+*~
