@@ -1,35 +1,22 @@
-.PHONY: build run clean test
+# Makefile for the typer project
 
-# Build the program
+BINARY_NAME=typer
+
+.PHONY: all build run clean
+
+all: build
+
+# Builds the binary
 build:
-	go build -o gotype main.go
+	@echo "Building $(BINARY_NAME)..."
+	@go build -o $(BINARY_NAME) main.go
 
-# Run the program
-run:
-	go run main.go
+# Runs the binary
+run: build
+	@echo "Running $(BINARY_NAME)..."
+	@./$(BINARY_NAME)
 
-# Clean build artifacts
+# Cleans the binary
 clean:
-	rm -f gotype
-
-# Install dependencies
-deps:
-	go mod tidy
-
-# Run tests (if any)
-test:
-	go test ./...
-
-# Build and run
-all: build run
-
-# Help
-help:
-	@echo "Available targets:"
-	@echo "  build  - Build the executable"
-	@echo "  run    - Run the program directly"
-	@echo "  clean  - Remove build artifacts"
-	@echo "  deps   - Install/update dependencies"
-	@echo "  test   - Run tests"
-	@echo "  all    - Build and run"
-	@echo "  help   - Show this help"
+	@echo "Cleaning..."
+	@rm -f $(BINARY_NAME)
