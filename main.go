@@ -53,6 +53,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if len(m.input) > 0 {
 				m.input = m.input[:len(m.input)-1]
 			}
+		case "alt+backspace":
+			if len(m.input) > 0 {
+				for i := len(m.input) - 1; i > 0; i-- {
+					if string(m.input[i]) == " " {
+						m.input = m.input[:i+1]
+						break
+					}
+				}
+			}
 		default:
 			if len(m.input) < len(m.sentence) {
 				m.input += string(msg.Runes)
